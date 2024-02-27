@@ -18,4 +18,5 @@ RaceGame is a game about driving on the road, your task is to avoid as many cars
 - [FileManager]
 - [CMMotionManager]
 
+## Gif
 ![](https://github.com/alexandronischenko/RaceGame/blob/master/gameUsage.gif)
