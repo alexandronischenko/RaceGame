@@ -49,7 +49,8 @@ class GameViewController: UIViewController {
         let label = UILabel()
         label.textColor = .white
         label.font = .score()
-        label.textAlignment = .center
+//        label.textAlignment = .center
+        label.textAlignment = .justified
         return label
     }()
 
@@ -109,7 +110,7 @@ class GameViewController: UIViewController {
 
     private func configureView() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.isNavigationBarHidden = true
 
         view.insertSubview(road, at: .zero)
         view.addSubview(scoreLabel)

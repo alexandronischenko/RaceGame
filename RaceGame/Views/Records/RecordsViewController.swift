@@ -33,6 +33,7 @@ class RecordsViewController: UIViewController {
     func configureView() {
         title = Localizable.records.localized
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.isNavigationBarHidden = false
         tableView = UITableView(frame: .zero)
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints {
