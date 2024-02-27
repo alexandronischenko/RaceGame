@@ -35,14 +35,6 @@ class GameViewController: UIViewController {
         return imageView
     }()
 
-    private lazy var flameObstacle: UIImageView = {
-        let view = UIImage(systemName: "flame")!
-        let imageView = UIImageView(image: view)
-        imageView.tintColor = .systemOrange
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-
     private lazy var carObstacles: [UIImageView] = {
         var views = [UIImageView]()
         for car in Constants.Assets.Cars.allCases {
@@ -57,13 +49,14 @@ class GameViewController: UIViewController {
         let label = UILabel()
         label.textColor = .white
         label.font = .score()
-        label.textAlignment = .center
+//        label.textAlignment = .center
+        label.textAlignment = .justified
         return label
     }()
 
     private lazy var leftButton: UIButton = {
         let leftButton = UIButton()
-        let leftImage = UIImage(systemName: "arrowtriangle.left.fill")
+        let leftImage = UIImage.left()
         leftButton.setImage(leftImage, for: .normal)
         leftButton.sizeToFit()
         leftButton.tag = 0
@@ -78,7 +71,7 @@ class GameViewController: UIViewController {
 
     private lazy var rightButton: UIButton = {
         let rightButton = UIButton()
-        let rightImage = UIImage(systemName: "arrowtriangle.right.fill")
+        let rightImage = UIImage.right()
         rightButton.setImage(rightImage, for: .normal)
         rightButton.imageView?.contentMode = .scaleAspectFit
         rightButton.contentVerticalAlignment = .fill
@@ -117,7 +110,7 @@ class GameViewController: UIViewController {
 
     private func configureView() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.isNavigationBarHidden = true
 
         view.insertSubview(road, at: .zero)
         view.addSubview(scoreLabel)
@@ -168,19 +161,19 @@ class GameViewController: UIViewController {
     }
 
     // MARK: TAP CONTROL
-
-    private lazy var x = 0
+    private lazy var x: Int = .zero
 
     @objc func buttonUp(_ sender: UIButton? = nil) {
         buttonTimer.invalidate()
+        x = .zero
     }
 
     @objc func buttonDown(_ sender: UIButton? = nil) {
         switch sender?.tag {
         case 0:
-            x -= 1
+            x = -Constants.Game.unit
         case 1:
-            x += 1
+            x = Constants.Game.unit
         default:
             x = .zero
         }
@@ -221,8 +214,7 @@ class GameViewController: UIViewController {
         buttonTimer.invalidate()
         self.car.isUserInteractionEnabled = false
         self.road.isUserInteractionEnabled = false
-        leftButton.isHidden = true
-        rightButton.isHidden = true
+        enableButtons(bool: false)
         presenter.stopGame(score: score)
     }
 }
@@ -239,17 +231,17 @@ extension GameViewController: GameViewProtocol {
         let obstacleMovement = DispatchWorkItem {
             self.gameTimer = Timer.scheduledTimer(withTimeInterval: Constants.Game.timeInterval, repeats: true) { timer in
                 guard let car = self.car.layer.presentation()?.frame else { return }
+                self.score += Constants.Game.unit
                 for carObstacle in self.carObstacles {
                     guard let carObstacleFrame = carObstacle.layer.presentation()?.frame else { return }
                     if (CGRectIntersectsRect(car, carObstacleFrame)) {
                         self.stop()
                     }
-                    
+
                     if carObstacle.center.y - Constants.Game.advanceDistance < self.car.center.y {
                         carObstacle.center = CGPoint(x: carObstacle.center.x,
-                                                          y: carObstacle.center.y + speed)
+                                                     y: carObstacle.center.y + speed)
                     } else {
-                        self.score += 1
                         let random = Int.random(in: Constants.Game.leftBorder ..< Constants.Game.rightBorder)
                         carObstacle.center = CGPoint(x:
                                                         self.view.center.x + CGFloat(random),
@@ -292,18 +284,22 @@ extension GameViewController: GameViewProtocol {
     private func configure(control: Control) {
         switch control {
         case .tap:
-            leftButton.isHidden = false
-            rightButton.isHidden = false
+            enableButtons(bool: true)
         case .swipe:
-            leftButton.isHidden = true
-            rightButton.isHidden = true
+            enableButtons(bool: false)
             let swipe = UIPanGestureRecognizer(target: self, action: #selector(handleSwipe))
             self.car.addGestureRecognizer(swipe)
         case .accelerometer:
-            leftButton.isHidden = true
-            rightButton.isHidden = true
+            enableButtons(bool: false)
             startAccelerometers()
         }
+    }
+
+    private func enableButtons(bool: Bool) {
+        leftButton.isHidden = !bool
+        rightButton.isHidden = !bool
+        leftButton.isEnabled = bool
+        rightButton.isEnabled = bool
     }
 }
 

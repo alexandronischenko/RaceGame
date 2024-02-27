@@ -39,8 +39,8 @@ class SettingsViewController: UIViewController {
 
     private lazy var profileImage: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.layer.cornerRadius = image.frame.size.width / 2
+        image.contentMode = .scaleToFill
+        image.layer.cornerRadius = CGFloat(Constants.Offset.x2)
         image.clipsToBounds = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pickImage))
         image.isUserInteractionEnabled = true
@@ -50,7 +50,7 @@ class SettingsViewController: UIViewController {
 
     private lazy var profileNameTextField: UITextField = {
         let field = UITextField()
-        field.textAlignment = .right
+        field.textAlignment = .left
         field.font = .large()
         field.delegate = self
         return field
@@ -124,6 +124,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.isNavigationBarHidden = false
         title = Localizable.settings.localized
         view.backgroundColor = .white
         configureView()

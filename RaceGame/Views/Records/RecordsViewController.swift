@@ -33,6 +33,7 @@ class RecordsViewController: UIViewController {
     func configureView() {
         title = Localizable.records.localized
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.isNavigationBarHidden = false
         tableView = UITableView(frame: .zero)
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints {
@@ -54,7 +55,7 @@ extension RecordsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let record = presenter.data[indexPath.row]
 
-        let imageName = UserDefaults.standard.imagePath
+        let imageName = record.image
         let imagePath = FileManager.getDocumentsDirectory().appendingPathComponent(imageName)
         guard let image = UIImage(contentsOfFile: imagePath.path) else { return UITableViewCell() }
 

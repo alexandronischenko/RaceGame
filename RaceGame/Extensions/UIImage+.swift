@@ -12,4 +12,14 @@ extension UIImage {
     static func person() -> UIImage {
         UIImage(systemName: "person.badge.plus") ?? UIImage()
     }
+
+    static func left() -> UIImage {
+        UIImage(systemName: "arrowtriangle.left.fill") ?? UIImage()
+    }
+
+    static func right() -> UIImage {
+        UIImage(systemName: "arrowtriangle.right.fill") ?? UIImage()
+    }
 }
+
+

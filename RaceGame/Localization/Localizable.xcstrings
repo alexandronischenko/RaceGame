@@ -543,13 +543,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You crashed into a car"
+            "value" : "You crashed"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы попали в аварию"
+            "value" : "Вы врезались"
           }
         }
       }
