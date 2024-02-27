@@ -39,5 +39,6 @@ struct Constants {
         static let spawnDelay = 250
         static let spawnPointY = 600
         static let timeInterval = 1.0 / 50.0
+        static let unit = 1
     }
 }
